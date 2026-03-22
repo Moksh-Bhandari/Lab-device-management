@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — Lab Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --surface2: #16161f;
+      --border: #1e1e2e;
+      --accent: #00e5ff;
+      --text: #e2e2f0;
+      --muted: #5a5a7a;
+      --issued: #f59e0b;
+      --available: #10b981;
+      --damaged: #ff4d6d;
+      --error: #ff4d6d;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Barlow', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; }
+    .nav-right  { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-user   { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+    .nav-user span { color: var(--text); }
+
+    .btn-logout {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.4rem 0.9rem; border-radius: 3px;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--error); color: var(--error); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-title { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; }
+    .page-title span {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.2em;
+      display: block; margin-bottom: 0.3rem;
+    }
+
+    .add-lab-form { display: flex; gap: 0.8rem; align-items: center; }
+    .add-lab-form input {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 3px; color: var(--text); font-family: var(--mono);
+      font-size: 0.85rem; padding: 0.6rem 1rem; outline: none;
+      width: 160px; transition: border-color 0.2s;
+    }
+    .add-lab-form input:focus { border-color: var(--accent); }
+    .add-lab-form input::placeholder { color: var(--muted); }
+
+    .btn-add {
+      background: var(--accent); color: #0a0a0f; font-family: var(--mono);
+      font-size: 0.75rem; font-weight: bold; letter-spacing: 0.1em;
+      padding: 0.6rem 1.2rem; border: none; border-radius: 3px;
+      cursor: pointer; white-space: nowrap; transition: opacity 0.2s;
+    }
+    .btn-add:hover { opacity: 0.85; }
+
+    .stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+
+    .stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1rem 1.5rem; min-width: 130px;
+    }
+    .stat-label {
+      font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .stat-value { font-size: 1.6rem; font-weight: 700; font-family: var(--mono); }
+    .stat-value.accent    { color: var(--accent); }
+    .stat-value.issued    { color: var(--issued); }
+    .stat-value.available { color: var(--available); }
+    .stat-value.damaged   { color: var(--damaged); }
+
+    .labs-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .lab-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .lab-card.open { border-color: rgba(0,229,255,0.3); }
+
+    .lab-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; cursor: pointer; user-select: none;
+      transition: background 0.2s;
+    }
+    .lab-header:hover { background: var(--surface2); }
+
+    .lab-header-left { display: flex; align-items: center; gap: 1rem; }
+    .lab-number { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; }
+    .lab-name   { font-weight: 600; font-size: 1rem; }
+    .lab-badges { display: flex; gap: 0.5rem; }
+
+    .badge {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; padding: 0.2rem 0.6rem; border-radius: 2px;
+    }
+    .badge-issued    { background: rgba(245,158,11,0.15); color: var(--issued);    border: 1px solid rgba(245,158,11,0.3); }
+    .badge-available { background: rgba(16,185,129,0.1);  color: var(--available); border: 1px solid rgba(16,185,129,0.25); }
+    .badge-damaged   { background: rgba(255,77,109,0.1);  color: var(--damaged);   border: 1px solid rgba(255,77,109,0.3); }
+
+    .chevron { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); transition: transform 0.3s; }
+    .lab-card.open .chevron { transform: rotate(180deg); }
+
+    .lab-body { display: none; border-top: 1px solid var(--border); }
+    .lab-card.open .lab-body { display: block; }
+
+    .add-devices-bar {
+      display: flex; align-items: center; gap: 0.8rem;
+      padding: 0.8rem 1.5rem; border-bottom: 1px solid var(--border);
+      background: rgba(0,229,255,0.02);
+    }
+    .add-devices-bar label {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.1em;
+    }
+    .add-devices-bar input {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 3px; color: var(--text); font-family: var(--mono);
+      font-size: 0.8rem; padding: 0.35rem 0.7rem; width: 70px;
+      outline: none; transition: border-color 0.2s;
+    }
+    .add-devices-bar input:focus { border-color: var(--accent); }
+
+    .btn-sm {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+      background: var(--accent); color: #0a0a0f; font-weight: bold;
+      padding: 0.35rem 0.8rem; border: none; border-radius: 3px;
+      cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn-sm:hover { opacity: 0.8; }
+
+    .btn-repair {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
+      background: transparent; color: var(--available);
+      border: 1px solid var(--available); padding: 0.25rem 0.6rem;
+      border-radius: 2px; cursor: pointer; white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .btn-repair:hover { background: rgba(16,185,129,0.1); }
+
+    .table-wrap { overflow-x: auto; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 900px; }
+
+    thead tr { background: rgba(0,0,0,0.3); }
+
+    th {
+      font-family: var(--mono); font-size: 0.6rem; color: var(--muted);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.8rem 1.2rem; text-align: left;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid rgba(30,30,46,0.5);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    tr.damaged-row td { background: rgba(255,77,109,0.07) !important; color: #ffb3c1; }
+    tr.damaged-row:hover td { background: rgba(255,77,109,0.12) !important; }
+
+    .status-dot { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.72rem; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; }
+    .dot-available { background: var(--available); box-shadow: 0 0 6px var(--available); }
+    .dot-issued    { background: var(--issued);    box-shadow: 0 0 6px var(--issued); }
+    .dot-damaged   { background: var(--damaged);   box-shadow: 0 0 6px var(--damaged); }
+
+    .empty-row td {
+      text-align: center; color: var(--muted);
+      font-family: var(--mono); font-size: 0.75rem; padding: 2rem;
+    }
+
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--surface); border: 1px solid var(--accent);
+      color: var(--accent); font-family: var(--mono); font-size: 0.75rem;
+      padding: 0.8rem 1.5rem; border-radius: 4px; z-index: 999;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .no-labs {
+      text-align: center; padding: 4rem 2rem;
+      font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">LAB_MANAGER</div>
+  <div class="nav-right">
+    <div class="nav-user">ADMIN: <span id="navUser">—</span></div>
+    <button class="btn-logout" onclick="logout()">LOGOUT</button>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="page-title">
+      <span>// Overview</span>
+      Lab Dashboard
+    </div>
+    <div class="add-lab-form">
+      <input type="text" id="labNumberInput" placeholder="e.g. 101" maxlength="20"/>
+      <button class="btn-add" onclick="addLab()">+ ADD LAB</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Total Labs</div><div class="stat-value accent"    id="statLabs">0</div></div>
+    <div class="stat"><div class="stat-label">Total Devices</div><div class="stat-value accent" id="statDevices">0</div></div>
+    <div class="stat"><div class="stat-label">Issued</div><div class="stat-value issued"        id="statIssued">0</div></div>
+    <div class="stat"><div class="stat-label">Available</div><div class="stat-value available"  id="statAvailable">0</div></div>
+    <div class="stat"><div class="stat-label">Damaged</div><div class="stat-value damaged"      id="statDamaged">0</div></div>
+  </div>
+
+  <div class="labs-list" id="labsList"></div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'http://127.0.0.1:5000';
+  let adminId       = localStorage.getItem('admin_id');
+  let adminUsername = localStorage.getItem('admin_username');
+
+  if (!adminId) { window.location.href = 'admin-login.html'; }
+  document.getElementById('navUser').textContent = adminUsername || '—';
+
+  let allLabs      = [];
+  let devicesByLab = {};
+
+  // ── STATS ─────────────────────────────────────────
+  function updateStats() {
+    let total = 0, issued = 0, avail = 0, damaged = 0;
+    for (const lab of allLabs) {
+      const devs = devicesByLab[lab.lab_id] || [];
+      total   += devs.length;
+      issued  += devs.filter(d => d.status === 'Issued').length;
+      avail   += devs.filter(d => d.status === 'Available').length;
+      damaged += devs.filter(d => d.status === 'Damaged').length;
+    }
+    document.getElementById('statLabs').textContent      = allLabs.length;
+    document.getElementById('statDevices').textContent   = total;
+    document.getElementById('statIssued').textContent    = issued;
+    document.getElementById('statAvailable').textContent = avail;
+    document.getElementById('statDamaged').textContent   = damaged;
+  }
+
+  // ── LOAD LABS ─────────────────────────────────────
+  async function loadLabs() {
+    try {
+      const res = await fetch(`${API}/api/labs`);
+      allLabs = await res.json();
+      renderLabs();
+    } catch(e) {
+      showToast('Cannot connect to server');
+    }
+  }
+
+  function renderLabs() {
+    const container = document.getElementById('labsList');
+    if (allLabs.length === 0) {
+      container.innerHTML = '<div class="no-labs">No labs yet. Add one above.</div>';
+      updateStats();
+      return;
+    }
+    container.innerHTML = '';
+    for (const lab of allLabs) {
+      container.appendChild(buildLabCard(lab));
+    }
+    updateStats();
+  }
+
+  function buildLabCard(lab) {
+    const card = document.createElement('div');
+    card.className = 'lab-card';
+    card.id = `lab-${lab.lab_id}`;
+    card.innerHTML = `
+      <div class="lab-header" onclick="toggleLab(${lab.lab_id})">
+        <div class="lab-header-left">
+          <div class="lab-number">LAB</div>
+          <div class="lab-name">Lab ${lab.lab_number}</div>
+          <div class="lab-badges" id="badges-${lab.lab_id}"></div>
+        </div>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="lab-body" id="body-${lab.lab_id}">
+        <div class="add-devices-bar">
+          <label>ADD PCs:</label>
+          <input type="number" id="devCount-${lab.lab_id}" value="1" min="1" max="50"/>
+          <button class="btn-sm" onclick="addDevices(${lab.lab_id}, event)">ADD</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>PC No.</th>
+                <th>Student Name</th>
+                <th>Roll Number</th>
+                <th>Year</th>
+                <th>Department</th>
+                <th>Division</th>
+                <th>Login Time</th>
+                <th>Logout Time</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-${lab.lab_id}">
+              <tr class="empty-row"><td colspan="10">Click to load devices...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  async function toggleLab(labId) {
+    const card = document.getElementById(`lab-${labId}`);
+    if (card.classList.contains('open')) {
+      card.classList.remove('open');
+    } else {
+      card.classList.add('open');
+      await loadDevices(labId);
+    }
+  }
+
+  async function loadDevices(labId) {
+    const tbody = document.getElementById(`tbody-${labId}`);
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="10">Loading...</td></tr>';
+
+    try {
+      const res     = await fetch(`${API}/api/devices/${labId}`);
+      const devices = await res.json();
+
+      devicesByLab[labId] = devices;
+      updateStats();
+      updateBadges(labId, devices);
+
+      if (devices.length === 0) {
+        tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No PCs in this lab yet.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      for (const d of devices) {
+        const tr        = document.createElement('tr');
+        const isDamaged = d.status === 'Damaged';
+        const isIssued  = d.status === 'Issued';
+
+        if (isDamaged) tr.classList.add('damaged-row');
+
+        const dotClass  = isDamaged ? 'dot-damaged' : isIssued ? 'dot-issued' : 'dot-available';
+        const actionBtn = isDamaged
+          ? `<button class="btn-repair" onclick="markRepaired(${d.device_id}, ${labId})">✓ MARK REPAIRED</button>`
+          : '—';
+
+        tr.innerHTML = `
+          <td><span style="font-family:var(--mono);font-size:0.8rem;color:var(--accent)">PC ${d.device_number}</span></td>
+          <td>${d.student_name         || '<span style="color:var(--muted)">—</span>'}</td>
+          <td style="font-family:var(--mono);font-size:0.78rem">${d.student_rollnumber || '<span style="color:var(--muted)">—</span>'}</td>
+          <td>${d.year                 || '<span style="color:var(--muted)">—</span>'}</td>
+          <td>${d.department           || '<span style="color:var(--muted)">—</span>'}</td>
+          <td>${d.division             || '<span style="color:var(--muted)">—</span>'}</td>
+          <td style="font-family:var(--mono);font-size:0.72rem;color:var(--muted)">${d.issue_date  ? formatDate(d.issue_date)  : '—'}</td>
+          <td style="font-family:var(--mono);font-size:0.72rem;color:var(--muted)">${d.return_date ? formatDate(d.return_date) : '—'}</td>
+          <td><span class="status-dot"><span class="dot ${dotClass}"></span>${d.status}</span></td>
+          <td>${actionBtn}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+    } catch(e) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="10">Failed to load.</td></tr>';
+    }
+  }
+
+  function updateBadges(labId, devices) {
+    const issued  = devices.filter(d => d.status === 'Issued').length;
+    const avail   = devices.filter(d => d.status === 'Available').length;
+    const damaged = devices.filter(d => d.status === 'Damaged').length;
+    const el = document.getElementById(`badges-${labId}`);
+    el.innerHTML = `
+      <span class="badge badge-issued">${issued} ISSUED</span>
+      <span class="badge badge-available">${avail} FREE</span>
+      ${damaged > 0 ? `<span class="badge badge-damaged">${damaged} DAMAGED</span>` : ''}
+    `;
+  }
+
+  // ── ADD LAB ───────────────────────────────────────
+  async function addLab() {
+    const input     = document.getElementById('labNumberInput');
+    const labNumber = input.value.trim();
+    if (!labNumber) { showToast('Enter a lab number first'); return; }
+    try {
+      const res  = await fetch(`${API}/api/labs`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lab_number: labNumber })
+      });
+      const data = await res.json();
+      if (res.ok) { input.value = ''; showToast(`Lab ${labNumber} added`); await loadLabs(); }
+      else { showToast(data.error || 'Failed to add lab'); }
+    } catch(e) { showToast('Server error'); }
+  }
+
+  // ── ADD DEVICES ───────────────────────────────────
+  async function addDevices(labId, e) {
+    e.stopPropagation();
+    const count = parseInt(document.getElementById(`devCount-${labId}`).value);
+    if (!count || count < 1) { showToast('Enter valid count'); return; }
+    try {
+      const res  = await fetch(`${API}/api/devices`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lab_id: labId, count })
+      });
+      const data = await res.json();
+      if (res.ok) { showToast(`${count} PC(s) added`); await loadDevices(labId); }
+      else { showToast(data.error || 'Failed'); }
+    } catch(e) { showToast('Server error'); }
+  }
+
+  // ── MARK REPAIRED ─────────────────────────────────
+  async function markRepaired(deviceId, labId) {
+    try {
+      const res  = await fetch(`${API}/api/devices/mark-available`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id: deviceId, admin_id: parseInt(adminId) })
+      });
+      const data = await res.json();
+      if (res.ok) { showToast('PC marked as repaired'); await loadDevices(labId); }
+      else { showToast(data.error || 'Failed'); }
+    } catch(e) { showToast('Server error'); }
+  }
+
+  // ── HELPERS ───────────────────────────────────────
+  function formatDate(str) {
+    if (!str) return '—';
+    const d = new Date(str.replace(' ', 'T'));
+    if (isNaN(d)) return str;
+    return d.toLocaleDateString('en-IN', { day:'2-digit', month:'2-digit', year:'numeric' })
+      + ' ' + d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12: true });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  async function logout() {
+    await fetch(`${API}/api/admin/logout`, { method: 'POST' });
+    localStorage.clear();
+    window.location.href = 'admin-login.html';
+  }
+
+  loadLabs();
+  setInterval(() => {
+    document.querySelectorAll('.lab-card.open').forEach(card => {
+      loadDevices(parseInt(card.id.replace('lab-', '')));
+    });
+  }, 30000);
+</script>
+</body>
+</html>
