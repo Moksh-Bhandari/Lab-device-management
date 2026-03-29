@@ -54,6 +54,54 @@ def mark_available():
     finally:
         db.close()
 
+# ── NEW: Remove Device Route ──────────────────────────────────────────────────
+@devices_bp.route('/api/devices/remove', methods=['POST'])
+def remove_device():
+    data = request.get_json()
+    lab_id        = data.get('lab_id')
+    device_number = data.get('device_number')
+
+    if not lab_id or not device_number:
+        return jsonify({'error': 'lab_id and device_number required'}), 400
+
+    db = get_db(current_app)
+    try:
+        with db.cursor() as cursor:
+            # Find the device
+            cursor.execute("""
+                SELECT device_id, status FROM DEVICE
+                WHERE lab_id = %s AND device_number = %s
+            """, (lab_id, device_number))
+            device = cursor.fetchone()
+
+            if not device:
+                return jsonify({'error': f'PC {device_number} not found in this lab'}), 404
+
+            if device['status'] == 'Issued':
+                return jsonify({'error': f'PC {device_number} is currently in use by a student'}), 400
+
+            if device['status'] == 'Damaged':
+                return jsonify({'error': f'PC {device_number} is marked as damaged, mark it repaired first'}), 400
+
+            # Delete issue records for this device then delete device
+            cursor.execute(
+                "DELETE FROM ISSUE_RECORD WHERE device_id = %s",
+                (device['device_id'],)
+            )
+            cursor.execute(
+                "DELETE FROM DEVICE WHERE device_id = %s",
+                (device['device_id'],)
+            )
+            db.commit()
+
+        return jsonify({'message': f'PC {device_number} removed successfully'}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 400
+    finally:
+        db.close()
+# ── END: Remove Device Route ──────────────────────────────────────────────────
+
 @devices_bp.route('/api/devices/<int:lab_id>', methods=['GET'])
 def get_devices(lab_id):
     db = get_db(current_app)

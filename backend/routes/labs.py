@@ -33,3 +33,50 @@ def add_lab():
         return jsonify({'error': str(e)}), 400
     finally:
         db.close()
+
+# ── NEW: Remove Lab Route ─────────────────────────────────────────────────────
+@labs_bp.route('/api/labs/<int:lab_id>', methods=['DELETE'])
+def remove_lab(lab_id):
+    db = get_db(current_app)
+    try:
+        with db.cursor() as cursor:
+            # Check for issued PCs
+            cursor.execute("""
+                SELECT COUNT(*) as count FROM DEVICE
+                WHERE lab_id = %s AND status = 'Issued'
+            """, (lab_id,))
+            issued = cursor.fetchone()['count']
+
+            # Check for damaged PCs
+            cursor.execute("""
+                SELECT COUNT(*) as count FROM DEVICE
+                WHERE lab_id = %s AND status = 'Damaged'
+            """, (lab_id,))
+            damaged = cursor.fetchone()['count']
+
+            errors = []
+            if issued > 0:
+                errors.append(f"{issued} student(s) are still logged in")
+            if damaged > 0:
+                errors.append(f"{damaged} PC(s) are still marked as damaged")
+
+            if errors:
+                return jsonify({'error': ' & '.join(errors)}), 400
+
+            # Safe to delete — delete issue records, devices, then lab
+            cursor.execute("""
+                DELETE ir FROM ISSUE_RECORD ir
+                JOIN DEVICE d ON ir.device_id = d.device_id
+                WHERE d.lab_id = %s
+            """, (lab_id,))
+            cursor.execute("DELETE FROM DEVICE WHERE lab_id = %s", (lab_id,))
+            cursor.execute("DELETE FROM LAB WHERE lab_id = %s", (lab_id,))
+            db.commit()
+
+        return jsonify({'message': 'Lab removed successfully'}), 200
+    except Exception as e:
+        db.rollback()
+        return jsonify({'error': str(e)}), 400
+    finally:
+        db.close()
+# ── END: Remove Lab Route ─────────────────────────────────────────────────────

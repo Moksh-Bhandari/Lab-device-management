@@ -42,3 +42,6 @@ CREATE TABLE ISSUE_RECORD (
     FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
     FOREIGN KEY (issued_by) REFERENCES ADMIN(admin_id)
 );
+
+-- insert command for bcrypt feature 
+INSERT INTO ADMIN (username, password) VALUES ('admin', '$2b$12$uFNWkDTeQxNzcnKPIQeNve43BsJkCy5OEtAs1jQPqofE4QBWji6Vm');
