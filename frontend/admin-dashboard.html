@@ -25,27 +25,19 @@
       --sans: 'Barlow', sans-serif;
     }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      min-height: 100vh;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
 
     body::before {
-      content: '';
-      position: fixed; inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image:
         linear-gradient(rgba(0,229,255,0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0,229,255,0.02) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none; z-index: 0;
+      background-size: 40px 40px; pointer-events: none; z-index: 0;
     }
 
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,15,0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(10,10,15,0.95); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem; height: 56px;
       display: flex; align-items: center; justify-content: space-between;
@@ -64,22 +56,17 @@
     }
     .btn-logout:hover { border-color: var(--error); color: var(--error); }
 
-    main {
-      position: relative; z-index: 1;
-      max-width: 1400px; margin: 0 auto; padding: 2rem;
-    }
+    main { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 2rem; }
 
     .page-header {
-      display: flex; justify-content: space-between;
-      align-items: flex-end; margin-bottom: 2rem;
-      flex-wrap: wrap; gap: 1rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
     }
 
     .page-title { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; }
     .page-title span {
-      font-family: var(--mono); font-size: 0.65rem;
-      color: var(--accent); letter-spacing: 0.2em;
-      display: block; margin-bottom: 0.3rem;
+      font-family: var(--mono); font-size: 0.65rem; color: var(--accent);
+      letter-spacing: 0.2em; display: block; margin-bottom: 0.3rem;
     }
 
     .lab-controls { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
@@ -109,7 +96,7 @@
     }
     .btn-remove-lab:hover { background: rgba(255,77,109,0.1); }
 
-    .divider-v { width: 1px; height: 32px; background: var(--border); }
+    .divider-v    { width: 1px; height: 32px; background: var(--border); }
     .divider-v-sm { width: 1px; height: 24px; background: var(--border); margin: 0 0.2rem; }
 
     .stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
@@ -137,8 +124,7 @@
 
     .lab-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.5rem; cursor: pointer; user-select: none;
-      transition: background 0.2s;
+      padding: 1rem 1.5rem; cursor: pointer; user-select: none; transition: background 0.2s;
     }
     .lab-header:hover { background: var(--surface2); }
 
@@ -167,8 +153,7 @@
       background: rgba(0,229,255,0.02); flex-wrap: wrap;
     }
     .device-controls-bar label {
-      font-family: var(--mono); font-size: 0.65rem;
-      color: var(--muted); letter-spacing: 0.1em;
+      font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em;
     }
     .device-controls-bar input {
       background: var(--bg); border: 1px solid var(--border);
@@ -190,8 +175,7 @@
       font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
       background: transparent; color: var(--warning); font-weight: bold;
       padding: 0.35rem 0.8rem; border: 1px solid var(--warning);
-      border-radius: 3px; cursor: pointer; transition: background 0.2s;
-      white-space: nowrap;
+      border-radius: 3px; cursor: pointer; transition: background 0.2s; white-space: nowrap;
     }
     .btn-select-remove:hover { background: rgba(245,158,11,0.1); }
 
@@ -207,8 +191,7 @@
       font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
       background: transparent; color: var(--muted); font-weight: bold;
       padding: 0.35rem 0.8rem; border: 1px solid var(--border);
-      border-radius: 3px; cursor: pointer; transition: border-color 0.2s;
-      white-space: nowrap;
+      border-radius: 3px; cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
     }
     .btn-cancel-remove:hover { border-color: var(--muted); }
 
@@ -221,26 +204,31 @@
     .selection-actions.visible { display: flex; }
 
     input[type="checkbox"].pc-checkbox {
-      width: 15px; height: 15px; cursor: pointer;
-      accent-color: var(--error);
+      width: 15px; height: 15px; cursor: pointer; accent-color: var(--error);
     }
-    input[type="checkbox"].pc-checkbox:disabled {
-      cursor: not-allowed; opacity: 0.3;
-    }
+    input[type="checkbox"].pc-checkbox:disabled { cursor: not-allowed; opacity: 0.3; }
 
     .btn-repair {
       font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
       background: transparent; color: var(--available);
       border: 1px solid var(--available); padding: 0.25rem 0.6rem;
-      border-radius: 2px; cursor: pointer; white-space: nowrap;
-      transition: background 0.2s;
+      border-radius: 2px; cursor: pointer; white-space: nowrap; transition: background 0.2s;
     }
     .btn-repair:hover { background: rgba(16,185,129,0.1); }
+
+    .btn-damage {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em;
+      background: transparent; color: var(--damaged);
+      border: 1px solid var(--damaged); padding: 0.25rem 0.6rem;
+      border-radius: 2px; cursor: pointer; white-space: nowrap; transition: background 0.2s;
+    }
+    .btn-damage:hover { background: rgba(255,77,109,0.1); }
+
+    .action-btns { display: flex; gap: 0.4rem; align-items: center; }
 
     .table-wrap { overflow-x: auto; }
 
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 900px; }
-
     thead tr { background: rgba(0,0,0,0.3); }
 
     th {
@@ -364,9 +352,7 @@
       const res = await fetch(`${API}/api/labs`);
       allLabs = await res.json();
       renderLabs();
-    } catch(e) {
-      showToast('Cannot connect to server', true);
-    }
+    } catch(e) { showToast('Cannot connect to server', true); }
   }
 
   function renderLabs() {
@@ -376,9 +362,7 @@
       updateStats(); return;
     }
     container.innerHTML = '';
-    for (const lab of allLabs) {
-      container.appendChild(buildLabCard(lab));
-    }
+    for (const lab of allLabs) container.appendChild(buildLabCard(lab));
     updateStats();
   }
 
@@ -463,8 +447,8 @@
       }
 
       const inSelectionMode = selectionMode[labId] || false;
-
       tbody.innerHTML = '';
+
       for (const d of devices) {
         const tr        = document.createElement('tr');
         const isDamaged = d.status === 'Damaged';
@@ -473,15 +457,26 @@
 
         if (isDamaged) tr.classList.add('damaged-row');
 
-        const dotClass  = isDamaged ? 'dot-damaged' : isIssued ? 'dot-issued' : 'dot-available';
-        const actionBtn = isDamaged
-          ? `<button class="btn-repair" onclick="markRepaired(${d.device_id}, ${labId})">✓ MARK REPAIRED</button>`
-          : '—';
-
+        const dotClass    = isDamaged ? 'dot-damaged' : isIssued ? 'dot-issued' : 'dot-available';
         const chkDisabled = !isAvail ? 'disabled' : '';
         const chkTitle    = isIssued  ? 'Student is currently using this PC' :
                             isDamaged ? 'PC is damaged, repair it first' : '';
         const chkDisplay  = inSelectionMode ? '' : 'display:none;';
+
+        // Action column — damaged row gets MARK REPAIRED
+        // available/issued rows get MARK DAMAGED (admin can mark any non-damaged PC)
+        let actionBtn = '';
+        if (isDamaged) {
+          actionBtn = `
+            <div class="action-btns">
+              <button class="btn-repair" onclick="markRepaired(${d.device_id}, ${labId})">✓ MARK REPAIRED</button>
+            </div>`;
+        } else {
+          actionBtn = `
+            <div class="action-btns">
+              <button class="btn-damage" onclick="adminMarkDamaged(${d.device_id}, ${labId})">⚠ MARK DAMAGED</button>
+            </div>`;
+        }
 
         tr.innerHTML = `
           <td class="chk-cell-${labId}" style="${chkDisplay} text-align:center;">
@@ -529,8 +524,7 @@
     if (!labNumber) { showToast('Enter a lab number first', true); return; }
     try {
       const res  = await fetch(`${API}/api/labs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lab_number: labNumber })
       });
       const data = await res.json();
@@ -544,20 +538,13 @@
     const input     = document.getElementById('removeLabInput');
     const labNumber = input.value.trim();
     if (!labNumber) { showToast('Enter a lab number to remove', true); return; }
-
     const lab = allLabs.find(l => l.lab_number === labNumber);
     if (!lab) { showToast(`Lab ${labNumber} not found`, true); return; }
-
     try {
       const res  = await fetch(`${API}/api/labs/${lab.lab_id}`, { method: 'DELETE' });
       const data = await res.json();
-      if (res.ok) {
-        input.value = '';
-        showToast(`Lab ${labNumber} removed`);
-        await loadLabs();
-      } else {
-        showToast(data.error || 'Failed to remove lab', true);
-      }
+      if (res.ok) { input.value = ''; showToast(`Lab ${labNumber} removed`); await loadLabs(); }
+      else { showToast(data.error || 'Failed to remove lab', true); }
     } catch(e) { showToast('Server error', true); }
   }
 
@@ -568,8 +555,7 @@
     if (!count || count < 1) { showToast('Enter valid count', true); return; }
     try {
       const res  = await fetch(`${API}/api/devices`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lab_id: labId, count })
       });
       const data = await res.json();
@@ -582,19 +568,16 @@
   function toggleSelectionMode(labId, e) {
     e.stopPropagation();
     selectionMode[labId] = true;
-
     document.getElementById(`chkHeader-${labId}`).style.display = '';
     document.querySelectorAll(`.chk-cell-${labId}`).forEach(el => el.style.display = '');
     document.getElementById(`selectionActions-${labId}`).classList.add('visible');
     document.getElementById(`selectBtn-${labId}`).style.display = 'none';
-
     updateSelectedCount(labId);
   }
 
   function cancelSelectionMode(labId, e) {
     e.stopPropagation();
     selectionMode[labId] = false;
-
     document.getElementById(`chkHeader-${labId}`).style.display = 'none';
     document.querySelectorAll(`.chk-cell-${labId}`).forEach(el => el.style.display = 'none');
     document.querySelectorAll(`.chk-cell-${labId} .pc-checkbox`).forEach(chk => chk.checked = false);
@@ -611,13 +594,10 @@
     e.stopPropagation();
     const checkboxes = document.querySelectorAll(`.chk-cell-${labId} .pc-checkbox:checked`);
     if (checkboxes.length === 0) { showToast('No PCs selected', true); return; }
-
     const deviceIds = Array.from(checkboxes).map(chk => parseInt(chk.dataset.deviceId));
-
     try {
       const res  = await fetch(`${API}/api/devices/remove`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lab_id: labId, device_ids: deviceIds })
       });
       const data = await res.json();
@@ -625,22 +605,32 @@
         showToast(`${deviceIds.length} PC(s) removed and renumbered`);
         cancelSelectionMode(labId, e);
         await loadDevices(labId);
-      } else {
-        showToast(data.error || 'Failed to remove PCs', true);
-      }
+      } else { showToast(data.error || 'Failed to remove PCs', true); }
     } catch(err) { showToast('Server error', true); }
   }
 
-  // ── MARK REPAIRED ─────────────────────────────────
+  // ── MARK REPAIRED (admin) ─────────────────────────
   async function markRepaired(deviceId, labId) {
     try {
       const res  = await fetch(`${API}/api/devices/mark-available`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ device_id: deviceId, admin_id: parseInt(adminId) })
       });
       const data = await res.json();
       if (res.ok) { showToast('PC marked as repaired'); await loadDevices(labId); }
+      else { showToast(data.error || 'Failed', true); }
+    } catch(e) { showToast('Server error', true); }
+  }
+
+  // ── MARK DAMAGED (admin) ──────────────────────────
+  async function adminMarkDamaged(deviceId, labId) {
+    try {
+      const res  = await fetch(`${API}/api/devices/report-damaged`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id: deviceId })
+      });
+      const data = await res.json();
+      if (res.ok) { showToast('PC marked as damaged'); await loadDevices(labId); }
       else { showToast(data.error || 'Failed', true); }
     } catch(e) { showToast('Server error', true); }
   }

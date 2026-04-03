@@ -35,8 +35,7 @@
 
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image:
         linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
@@ -45,14 +44,12 @@
     }
 
     .box {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: 2.5rem;
-      width: 100%;
-      max-width: 540px;
+      width: 100%; max-width: 540px;
       animation: fadeUp 0.6s ease both;
     }
 
@@ -62,23 +59,16 @@
     }
 
     .back {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      display: inline-block;
-      margin-bottom: 1.8rem;
-      transition: color 0.2s;
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--muted); text-decoration: none;
+      letter-spacing: 0.1em; display: inline-block;
+      margin-bottom: 1.8rem; transition: color 0.2s;
     }
     .back:hover { color: var(--accent); }
 
     .tag {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      margin-bottom: 0.5rem;
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.2em; margin-bottom: 0.5rem;
     }
 
     h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 2rem; }
@@ -86,29 +76,18 @@
     .field { margin-bottom: 1.2rem; }
 
     label {
-      display: block;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
+      display: block; font-family: var(--mono); font-size: 0.65rem;
+      color: var(--muted); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 0.5rem;
     }
 
     input, select {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
-      outline: none;
-      transition: border-color 0.2s;
-      appearance: none;
+      width: 100%; background: var(--bg);
+      border: 1px solid var(--border); border-radius: 3px;
+      color: var(--text); font-family: var(--mono);
+      font-size: 0.9rem; padding: 0.75rem 1rem;
+      outline: none; transition: border-color 0.2s; appearance: none;
     }
-
     input:focus, select:focus { border-color: var(--accent); }
     select option { background: var(--surface); }
 
@@ -116,36 +95,20 @@
     .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
     .toggle-indicator {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 0.9rem 1rem;
-      margin-bottom: 1.8rem;
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 3px; padding: 0.9rem 1rem; margin-bottom: 1.8rem;
     }
 
     .toggle-track {
-      position: relative;
-      width: 52px;
-      height: 26px;
-      background: #1e1e2e;
-      border-radius: 13px;
-      flex-shrink: 0;
+      position: relative; width: 52px; height: 26px;
+      background: #1e1e2e; border-radius: 13px; flex-shrink: 0;
     }
-
     .toggle-thumb {
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 20px;
-      height: 20px;
-      background: var(--muted);
-      border-radius: 50%;
-      transition: left 0.3s, background 0.3s;
+      position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; background: var(--muted);
+      border-radius: 50%; transition: left 0.3s, background 0.3s;
     }
-
     .toggle-track.on { background: rgba(16,185,129,0.15); border: 1px solid var(--success); }
     .toggle-track.on .toggle-thumb { left: 29px; background: var(--success); }
 
@@ -154,20 +117,12 @@
     .toggle-label.off { color: var(--muted); }
 
     .btn {
-      width: 100%;
-      margin-top: 1rem;
-      padding: 0.85rem;
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      font-weight: bold;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
+      width: 100%; margin-top: 1rem; padding: 0.85rem;
+      font-family: var(--mono); font-size: 0.85rem;
+      font-weight: bold; letter-spacing: 0.15em;
+      text-transform: uppercase; border: none; border-radius: 3px;
+      cursor: pointer; transition: opacity 0.2s, transform 0.1s;
     }
-
     .btn:active { transform: scale(0.98); }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
     .btn-primary { background: var(--accent); color: #0a0a0f; }
@@ -180,31 +135,19 @@
     .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
     .msg {
-      margin-top: 0.8rem;
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      text-align: center;
-      display: none;
-      padding: 0.6rem;
-      border-radius: 3px;
+      margin-top: 0.8rem; font-family: var(--mono); font-size: 0.75rem;
+      text-align: center; display: none; padding: 0.6rem; border-radius: 3px;
     }
     .msg.error   { display: block; color: var(--error);   background: rgba(255,77,109,0.08);  border: 1px solid rgba(255,77,109,0.2); }
     .msg.success { display: block; color: var(--success); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
 
     .session-info {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      line-height: 2;
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--muted); line-height: 2;
     }
     .session-info span { color: var(--accent); }
 
-    .hint {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--muted);
-      margin-top: 0.4rem;
-    }
+    .hint { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); margin-top: 0.4rem; }
 
     #step1, #step2-login, #step2-logout { display: none; }
     #step1 { display: block; }
@@ -229,9 +172,7 @@
   <!-- STEP 2A: Login form -->
   <div id="step2-login">
     <div class="toggle-indicator">
-      <div class="toggle-track">
-        <div class="toggle-thumb"></div>
-      </div>
+      <div class="toggle-track"><div class="toggle-thumb"></div></div>
       <span class="toggle-label off">LOGGED OUT</span>
     </div>
 
@@ -296,9 +237,7 @@
   <!-- STEP 2B: Logout screen -->
   <div id="step2-logout">
     <div class="toggle-indicator">
-      <div class="toggle-track on">
-        <div class="toggle-thumb"></div>
-      </div>
+      <div class="toggle-track on"><div class="toggle-thumb"></div></div>
       <span class="toggle-label on">LOGGED IN</span>
     </div>
 
@@ -310,7 +249,10 @@
     </p>
 
     <button class="btn btn-danger" onclick="doLogout()">LOG OUT →</button>
-    <button class="btn btn-warning" onclick="reportDamagedFromSession()">⚠ REPORT THIS PC AS DAMAGED</button>
+
+    <!-- Report damaged while logged in — session stays active -->
+    <button class="btn btn-warning" id="reportDamagedBtn" onclick="reportDamagedFromSession()">⚠ REPORT THIS PC AS DAMAGED</button>
+
     <div class="msg" id="logoutMsg"></div>
   </div>
 </div>
@@ -319,18 +261,18 @@
   const API = 'http://127.0.0.1:5000';
   const SYSTEM_ADMIN_ID = 1;
 
-  let currentRoll = '';
-  let activeIssueId = null;
+  let currentRoll    = '';
+  let activeIssueId  = null;
   let activeDeviceId = null;
 
-  // ── STEP 1 ────────────────────────────────────────
+  // ── STEP 1: Check roll number ─────────────────────
   async function checkStatus() {
     const roll = document.getElementById('checkRoll').value.trim();
     if (!roll) { showMsg('checkMsg', 'Enter your roll number', 'error'); return; }
     currentRoll = roll;
 
     try {
-      const res = await fetch(`${API}/api/student/status`, {
+      const res  = await fetch(`${API}/api/student/status`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ student_rollnumber: roll })
@@ -338,10 +280,13 @@
       const data = await res.json();
 
       if (data.status === 'logged_in') {
-        activeIssueId = data.issue_id;
+        activeIssueId  = data.issue_id;
         activeDeviceId = data.device_id;
         document.getElementById('sessionInfo').innerHTML =
           `Roll No: <span>${roll}</span><br>Device ID: <span>#${data.device_id}</span><br>Status: <span>ACTIVE</span>`;
+        // Reset the report button visibility every time we enter logout screen
+        document.getElementById('reportDamagedBtn').style.display = '';
+        document.getElementById('logoutMsg').className = 'msg';
         show('step2-logout');
       } else {
         document.getElementById('rollDisplay').value = roll;
@@ -353,11 +298,11 @@
     }
   }
 
-  // ── Load labs ─────────────────────────────────────
+  // ── Load labs dropdown ────────────────────────────
   async function loadLabs() {
     const sel = document.getElementById('labSelect');
     try {
-      const res = await fetch(`${API}/api/labs`);
+      const res  = await fetch(`${API}/api/labs`);
       const labs = await res.json();
       sel.innerHTML = '<option value="">Select Lab</option>';
       for (const lab of labs) {
@@ -370,12 +315,12 @@
 
   // ── Resolve device_id from lab + device_number ────
   async function resolveDevice(labId, devNum) {
-    const res = await fetch(`${API}/api/devices/${labId}`);
+    const res     = await fetch(`${API}/api/devices/${labId}`);
     const devices = await res.json();
     return devices.find(d => d.device_number == parseInt(devNum)) || null;
   }
 
-  // ── Login ─────────────────────────────────────────
+  // ── LOGIN ─────────────────────────────────────────
   async function doLogin() {
     const name     = document.getElementById('studentName').value.trim();
     const dept     = document.getElementById('department').value;
@@ -395,12 +340,12 @@
       showMsg('loginMsg', 'Could not verify device', 'error'); return;
     }
 
-    if (!device) { showMsg('loginMsg', `PC ${devNum} not found in this lab`, 'error'); return; }
-    if (device.status === 'Issued')  { showMsg('loginMsg', `PC ${devNum} is already in use`, 'error'); return; }
-    if (device.status === 'Damaged') { showMsg('loginMsg', `PC ${devNum} is marked as damaged`, 'error'); return; }
+    if (!device)                    { showMsg('loginMsg', `PC ${devNum} not found in this lab`, 'error'); return; }
+    if (device.status === 'Issued') { showMsg('loginMsg', `PC ${devNum} is already in use`, 'error'); return; }
+    if (device.status === 'Damaged'){ showMsg('loginMsg', `PC ${devNum} is marked as damaged`, 'error'); return; }
 
     try {
-      const res = await fetch(`${API}/api/student/login`, {
+      const res  = await fetch(`${API}/api/student/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -424,11 +369,11 @@
     }
   }
 
-  // ── Logout ────────────────────────────────────────
+  // ── LOGOUT ────────────────────────────────────────
   async function doLogout() {
     if (!activeIssueId) return;
     try {
-      const res = await fetch(`${API}/api/student/logout`, {
+      const res  = await fetch(`${API}/api/student/logout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ issue_id: activeIssueId })
@@ -445,7 +390,7 @@
     }
   }
 
-  // ── Report damaged (from login screen) ───────────
+  // ── REPORT DAMAGED from login screen ─────────────
   async function reportDamaged() {
     const labId  = document.getElementById('labSelect').value;
     const devNum = document.getElementById('deviceNumber').value.trim();
@@ -453,21 +398,39 @@
       showMsg('loginMsg', 'Select lab and enter device number first', 'error'); return;
     }
     let device;
-    try { device = await resolveDevice(labId, devNum); } 
+    try { device = await resolveDevice(labId, devNum); }
     catch(e) { showMsg('loginMsg', 'Could not verify device', 'error'); return; }
     if (!device) { showMsg('loginMsg', `PC ${devNum} not found`, 'error'); return; }
-    await markDamaged(device.device_id, 'loginMsg');
+    await markDamaged(device.device_id, 'loginMsg', false);
   }
 
-  // ── Report damaged (from active session) ─────────
+  // ── REPORT DAMAGED while session is active ────────
+  // Session stays active — student remains logged in
   async function reportDamagedFromSession() {
     if (!activeDeviceId) return;
-    await markDamaged(activeDeviceId, 'logoutMsg');
+    try {
+      const res  = await fetch(`${API}/api/devices/report-damaged`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device_id: activeDeviceId })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // Show success but keep session active — do NOT reset
+        showMsg('logoutMsg', 'PC reported as damaged. Your session is still active.', 'success');
+        // Hide button so student cannot report twice
+        document.getElementById('reportDamagedBtn').style.display = 'none';
+      } else {
+        showMsg('logoutMsg', data.error || 'Failed to report', 'error');
+      }
+    } catch(e) {
+      showMsg('logoutMsg', 'Server error', 'error');
+    }
   }
 
-  async function markDamaged(deviceId, msgId) {
+  async function markDamaged(deviceId, msgId, resetAfter = true) {
     try {
-      const res = await fetch(`${API}/api/devices/report-damaged`, {
+      const res  = await fetch(`${API}/api/devices/report-damaged`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ device_id: deviceId })
@@ -475,7 +438,7 @@
       const data = await res.json();
       if (res.ok) {
         showMsg(msgId, 'PC reported as damaged. Thank you.', 'success');
-        setTimeout(resetToStep1, 2000);
+        if (resetAfter) setTimeout(resetToStep1, 2000);
       } else {
         showMsg(msgId, data.error || 'Failed to report', 'error');
       }
@@ -484,7 +447,7 @@
     }
   }
 
-  // ── Helpers ───────────────────────────────────────
+  // ── HELPERS ───────────────────────────────────────
   function show(stepId) {
     ['step1','step2-login','step2-logout'].forEach(id => {
       document.getElementById(id).style.display = id === stepId ? 'block' : 'none';
@@ -496,6 +459,7 @@
     currentRoll = '';
     document.getElementById('checkRoll').value = '';
     document.getElementById('checkMsg').className = 'msg';
+    document.getElementById('reportDamagedBtn').style.display = '';
     show('step1');
   }
 
